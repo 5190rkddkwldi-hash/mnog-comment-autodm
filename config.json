@@ -1,0 +1,19 @@
+{
+  "account": "m_nog.hk",
+  "maxPerRun": 10,
+  "automations": [
+    {
+      "id": "shirt-21",
+      "enabled": true,
+      "mediaId": "17988908313050436",
+      "permalink": "https://www.instagram.com/reel/DdlUlrKJr31/",
+      "keywords": ["정보", "정보요", "정보용", "info"],
+      "replyTemplates": [
+        "감사합니다 링크 보내드렸어요 :)",
+        "감사합니다! DM으로 링크 보내드렸어요",
+        "확인했습니다, DM 확인 부탁드려요 :)"
+      ],
+      "dmText": "안녕하세요, 므노그입니다 :)\n문의주신 셔츠 정보 보내드려요!\n\n오버핏 폴리 긴팔 데일리 셔츠\nhttps://mnog.co.kr/product/detail.html?product_no=21&cate_no=1&display_group=2\n\n궁금한 점 있으시면 편하게 답장 주세요!"
+    }
+  ]
+}
