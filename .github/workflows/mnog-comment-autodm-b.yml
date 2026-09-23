@@ -1,0 +1,45 @@
+name: mnog-comment-autodm-b
+
+# A(mnog-comment-autodm)가 끝나면 B가 이어받고, B가 끝나면 A가 이어받는다.
+# GitHub 크론 스케줄러가 늦거나 건너뛰어도 감시가 끊기지 않게 하는 핑퐁 구조.
+on:
+  workflow_run:
+    workflows: ["mnog-comment-autodm"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: comment-to-dm
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Poll loop (about 55 minutes, every 60s)
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: |
+          git config user.name "mnog-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          END=$(( $(date +%s) + 3300 ))
+          while [ "$(date +%s)" -lt "$END" ]; do
+            node index.js || true
+            if [ -n "$(git status --porcelain state.json)" ]; then
+              git add state.json
+              git commit -m "state: $(date -u +%FT%TZ)"
+              git pull --rebase --autostash || true
+              git push || true
+            fi
+            sleep 60
+          done
