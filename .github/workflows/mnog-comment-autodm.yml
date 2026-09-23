@@ -2,8 +2,11 @@ name: mnog-comment-autodm
 
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '0 * * * *'
   workflow_dispatch:
+  workflow_run:
+    workflows: ["mnog-comment-autodm-b"]
+    types: [completed]
   push:
     branches: [main]
     paths-ignore:
@@ -14,7 +17,7 @@ permissions:
 
 concurrency:
   group: comment-to-dm
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   run:
